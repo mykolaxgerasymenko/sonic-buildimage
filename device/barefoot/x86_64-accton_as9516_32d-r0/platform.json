@@ -1,4 +1,206 @@
 {
+    "chassis": {
+        "name": "Newport",
+        "fans": [
+            {
+                "name": "counter-rotating-fan-1"
+            },
+            {
+                "name": "counter-rotating-fan-2"
+            },
+            {
+                "name": "counter-rotating-fan-3"
+            },
+            {
+                "name": "counter-rotating-fan-4"
+            },
+            {
+                "name": "counter-rotating-fan-5"
+            },
+            {
+                "name": "counter-rotating-fan-6"
+            }
+        ],
+        "fan_drawers":[
+            {
+                "name": "fantray",
+                "num_fans" : 6,
+                "fans": [
+                    {
+                        "name": "counter-rotating-fan-1"
+                    },
+                    {
+                        "name": "counter-rotating-fan-2"
+                    },
+                    {
+                        "name": "counter-rotating-fan-3"
+                    },
+                    {
+                        "name": "counter-rotating-fan-4"
+                    },
+                    {
+                        "name": "counter-rotating-fan-5"
+                    },
+                    {
+                        "name": "counter-rotating-fan-6"
+                    }
+                ]
+            }
+        ],
+        "psus": [
+            {
+                "name": "psu-1"
+            },
+            {
+                "name": "psu-2"
+            }
+        ],
+        "thermals": [
+            {
+                "name": "tmp75-i2c-3-4b:switch-temp"
+            },
+            {
+                "name": "com_e_driver-i2c-4-33:memory-temp"
+            },
+            {
+                "name": "com_e_driver-i2c-4-33:cpu-temp"
+            },
+            {
+                "name": "coretemp-isa-0000:core-0"
+            },
+            {
+                "name": "coretemp-isa-0000:core-1"
+            },
+            {
+                "name": "coretemp-isa-0000:core-2"
+            },
+            {
+                "name": "coretemp-isa-0000:core-3"
+            },
+            {
+                "name": "coretemp-isa-0000:package-id-0"
+            },
+            {
+                "name": "psu_driver-i2c-7-5a:psu1-temp1"
+            },
+            {
+                "name": "psu_driver-i2c-7-5a:psu1-temp2"
+            },
+            {
+                "name": "psu_driver-i2c-7-5a:psu1-temp3"
+            },
+            {
+                "name": "tmp75-i2c-3-4a:inlet-left-temp"
+            },
+            {
+                "name": "tmp75-i2c-3-4c:inlet-right-temp"
+            },
+            {
+                "name": "tmp75-i2c-3-4d:temp1"
+            },
+            {
+                "name": "tmp75-i2c-3-48:outlet-middle-temp"
+            },
+            {
+                "name": "tmp75-i2c-3-49:inlet-middle-temp"
+            }
+        ],
+        "sfps": [
+            {
+                "name": "Ethernet0"
+            },
+            {
+                "name": "Ethernet8"
+            },
+            {
+                "name": "Ethernet16"
+            },
+            {
+                "name": "Ethernet32"
+            },
+            {
+                "name": "Ethernet40"
+            },
+            {
+                "name": "Ethernet48"
+            },
+            {
+                "name": "Ethernet56"
+            },
+            {
+                "name": "Ethernet64"
+            },
+            {
+                "name": "Ethernet72"
+            },
+            {
+                "name": "Ethernet80"
+            },
+            {
+                "name": "Ethernet88"
+            },
+            {
+                "name": "Ethernet96"
+            },
+            {
+                "name": "Ethernet104"
+            },
+            {
+                "name": "Ethernet112"
+            },
+            {
+                "name": "Ethernet120"
+            },
+            {
+                "name": "Ethernet128"
+            },
+            {
+                "name": "Ethernet136"
+            },
+            {
+                "name": "Ethernet144"
+            },
+            {
+                "name": "Ethernet152"
+            },
+            {
+                "name": "Ethernet160"
+            },
+            {
+                "name": "Ethernet168"
+            },
+            {
+                "name": "Ethernet176"
+            },
+            {
+                "name": "Ethernet184"
+            },
+            {
+                "name": "Ethernet192"
+            },
+            {
+                "name": "Ethernet200"
+            },
+            {
+                "name": "Ethernet208"
+            },
+            {
+                "name": "Ethernet216"
+            },
+            {
+                "name": "Ethernet224"
+            },
+            {
+                "name": "Ethernet232"
+            },
+            {
+                "name": "Ethernet240"
+            },
+            {
+                "name": "Ethernet248"
+            }
+        ]
+    },
     "interfaces": {
         "Ethernet0": {
             "index": "1,1,1,1,1,1,1,1",

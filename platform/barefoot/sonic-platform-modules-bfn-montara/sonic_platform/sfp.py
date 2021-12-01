@@ -20,6 +20,11 @@ try:
 except ImportError as e:
     raise ImportError (str(e) + "- required module not found")
 
+SFP_TYPE = "SFP"
+QSFP_TYPE = "QSFP"
+QSFP_DD_TYPE = "QSFP_DD"
+
+
 class SfpUtil(SfpUtilBase):
     """Platform-specific SfpUtil class"""
 
@@ -119,6 +124,30 @@ class SfpUtil(SfpUtilBase):
             return client.pltfm_mgr.pltfm_mgr_qsfp_lpmode_set(port_num, lpmode)
 
         status = thrift_try(qsfp_lpmode_set)
+
+        return (status == 0)
+
+    def get_tx_disable_channel(self, port_num, channel_num):
+        # Check for invalid port_num
+        if port_num < self.port_start or port_num > self.port_end:
+            return True
+
+        def qsfp_tx_is_disabled(client):
+            return client.pltfm_mgr.pltfm_mgr_qsfp_tx_is_disabled(port_num, channel_num)
+
+        tx_is_disabled = thrift_try(qsfp_tx_is_disabled, 1)
+
+        return tx_is_disabled
+
+    def tx_disable_channel(self, port_num, channel_mask, disable):
+        # Check for invalid port_num
+        if port_num < self.port_start or port_num > self.port_end:
+            return False
+
+        def qsfp_tx_disable_channel(client):
+            return client.pltfm_mgr.pltfm_mgr_qsfp_tx_disable(port_num, channel_mask, disable)
+
+        status = thrift_try(qsfp_tx_disable_channel)
 
         return (status == 0)
 
@@ -252,6 +281,7 @@ class Sfp(SfpBase):
     def __init__(self, port_num):
         self.index = port_num
         self.port_num = port_num
+        self.sfp_type = QSFP_TYPE
         SfpBase.__init__(self)
 
     def get_presence(self):
@@ -317,6 +347,71 @@ class Sfp(SfpBase):
         """
         info = self.get_transceiver_info()
         return info.get("serial", "N/A")
+
+    def get_tx_disable(self):
+        """
+        Retrieves the tx_disable status of this SFP
+        Returns:
+            A Boolean, True if tx_disable is enabled, False if disabled
+        """
+        tx_disable_list = []
+        with Sfp.sfputil.eeprom_action() as u:
+            if self.sfp_type == QSFP_TYPE:
+                tx_disable_list.append(u.get_tx_disable_channel(self.port_num, 0))
+                tx_disable_list.append(u.get_tx_disable_channel(self.port_num, 1))
+                tx_disable_list.append(u.get_tx_disable_channel(self.port_num, 2))
+                tx_disable_list.append(u.get_tx_disable_channel(self.port_num, 3))
+                return tx_disable_list
+        return None
+
+    def get_tx_disable_channel(self):
+        """
+        Retrieves the TX disabled channels in this SFP
+        Returns:
+            A hex of 4 bits (bit 0 to bit 3 as channel 0 to channel 3) to represent
+            TX channels which have been disabled in this SFP.
+            As an example, a returned value of 0x5 indicates that channel 0
+            and channel 2 have been disabled.
+        """
+        if self.sfp_type == QSFP_TYPE:
+            tx_disable_list = self.get_tx_disable()
+            if tx_disable_list is None:
+                return 0
+            tx_disabled = 0
+            for i in range(len(tx_disable_list)):
+                if tx_disable_list[i]:
+                    tx_disabled |= 1 << i
+            return tx_disabled
+        return None
+
+    def tx_disable(self, tx_disable):
+        """
+        Disable SFP TX for all channels
+        Args:
+            tx_disable : A Boolean, True to enable tx_disable mode, False to disable
+                         tx_disable mode.
+        Returns:
+            A boolean, True if tx_disable is set successfully, False if not
+        """
+        if self.sfp_type == QSFP_TYPE:
+            return self.tx_disable_channel(0xF, tx_disable)
+        return False
+
+    def tx_disable_channel(self, channel, disable):
+        """
+        Sets the tx_disable for specified SFP channels
+        Args:
+            channel : A hex of 4 bits (bit 0 to bit 3) which represent channel 0 to 3,
+                      e.g. 0x5 for channel 0 and channel 2.
+            disable : A boolean, True to disable TX channels specified in channel,
+                      False to enable
+        Returns:
+            A boolean, True if successful, False if not
+        """
+        with Sfp.sfputil.eeprom_action() as u:
+            if self.sfp_type == QSFP_TYPE:
+                return u.tx_disable_channel(self.port_num, channel, disable)
+        return False
 
 def sfp_list_get():
     sfp_list = []

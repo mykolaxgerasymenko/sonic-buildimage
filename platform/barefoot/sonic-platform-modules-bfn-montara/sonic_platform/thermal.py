@@ -76,18 +76,27 @@ class Thermal(ThermalBase):
     def __get(self, attr_prefix, attr_suffix):
         sensor_data = _sensors_get().get(self.__chip, {}).get(self.__label, {})
         value = _value_get(sensor_data, attr_prefix, attr_suffix)
-        if value is not None: return value
-        raise NotImplementedError
+        if value is not None: 
+            return value
+        else:
+            return -999.9
 
     # ThermalBase interface methods:
     def get_temperature(self) -> float:
         return float(self.__get('temp', 'input'))
-
+ 
     def get_high_threshold(self) -> float:
         return float(self.__get('temp', 'max'))
 
+
     def get_high_critical_threshold(self) -> float:
         return float(self.__get('temp', 'crit'))
+        
+    def get_low_critical_threshold(self) -> float:
+        return float(self.__get('temp', 'alarm'))
+        
+    def get_model(self):
+        return f"{self.__label}".lower()
 
     # DeviceBase interface methods:
     def get_name(self):

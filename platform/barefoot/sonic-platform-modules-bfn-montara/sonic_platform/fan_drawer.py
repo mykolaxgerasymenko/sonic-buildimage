@@ -57,6 +57,67 @@ class Fan(FanBase):
     def get_status(self):
         return True
 
+    def get_model(self):
+        """
+        Retrieves the part number of the fan drawer
+        Returns:
+            string: Part number of fan drawer
+        """
+        return 'N/A'
+
+    def get_direction(self):
+        """
+        Retrieves the direction of fan
+
+        Returns:
+            A string, either FAN_DIRECTION_INTAKE or FAN_DIRECTION_EXHAUST
+            depending on fan direction
+        """
+        return 'N/A'
+
+    def get_target_speed(self):
+        """
+        Retrieves the target (expected) speed of the fan
+        Returns:
+            An integer, the percentage of full fan speed, in the range 0 (off)
+                 to 100 (full speed)
+        """
+        return 0
+
+    def get_speed_tolerance(self):
+        """
+        Retrieves the speed tolerance of the fan
+
+        Returns:
+            An integer, the percentage of variance from target speed which is
+                 considered tolerable
+        """
+        return 0
+
+    def get_serial(self):
+        """
+        Retrieves the serial number of the device
+
+        Returns:
+            string: Serial number of device
+        """
+        return 'N/A'
+
+    def set_status_led(self, color):
+        """
+        Sets the state of the fan module status LED
+
+        Args:
+            color: A string representing the color with which to set the
+                   fan module status LED
+
+        Returns:
+            bool: True if status LED state is set successfully, False if not
+        """
+        # Fan tray status LED controlled by BMC
+        # Should return True to avoid thermalctld alarm
+        return False
+
 # FanDrawer -> FanDrawerBase -> DeviceBase
 class FanDrawer(FanDrawerBase):
     def __init__(self, fantray_index):

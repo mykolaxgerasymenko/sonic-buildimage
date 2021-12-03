@@ -18,6 +18,8 @@ class Psu(PsuBase):
     def __init__(self, index):
         PsuBase.__init__(self)
         self.__index = index
+        # STUB IMPLEMENTATION
+        self.color = ""
 
     '''
     Units of returned info object values:
@@ -95,15 +97,84 @@ class Psu(PsuBase):
         status = thrift_try(psu_present_get)
         return status
 
+    def set_status_led(self, color):
+        """
+        Sets the state of the PSU status LED
+
+        Args:
+            color: A string representing the color with which to set the
+                   PSU status LED
+
+        Returns:
+            bool: True if status LED state is set successfully, False if not
+        """
+        # STUB IMPLEMENTATION
+        self.color = color
+        return True
+
+    def get_status_led(self):
+        """
+        Gets the state of the PSU status LED
+
+        Returns:
+            A string, one of the predefined STATUS_LED_COLOR_* strings above
+        """
+        # STUB IMPLEMENTATION
+        return self.color
+
     # DeviceBase iface:
     def get_serial(self):
+        """
+        Retrieves the serial number of the device
+
+        Returns:
+            string: Serial number of device
+        """
         return self.__info_get().serial
 
     def get_model(self):
+        """
+        Retrieves the model number (or part number) of the device
+
+        Returns:
+            string: Model/part number of device
+        """
         return self.__info_get().model
 
     def is_replaceable(self):
+        """
+        Indicate whether this device is replaceable.
+        Returns:
+            bool: True if it is replaceable.
+        """
         return True
+
+    def get_revision(self):
+        """
+        Retrieves the hardware revision of the device
+
+        Returns:
+            string: Revision value of device
+        """
+        return self.__info_get().rev
+
+    def get_status(self):
+        """
+        Retrieves the operational status of the device
+
+        Returns:
+            A boolean value, True if device is operating properly, False if not
+        """
+        return self.get_powergood_status()
+
+    def get_position_in_parent(self):
+        """
+        Retrieves 1-based relative physical position in parent device. If the agent cannot determine the parent-relative position
+        for some reason, or if the associated value of entPhysicalContainedIn is '0', then the value '-1' is returned
+        Returns:
+            integer: The 1-based relative physical position in parent device or -1 if cannot determine the position
+        """
+        return self.__index
 
 def psu_list_get():
     psu_list = []

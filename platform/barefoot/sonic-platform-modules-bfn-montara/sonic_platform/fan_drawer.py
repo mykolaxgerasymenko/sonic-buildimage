@@ -2,23 +2,14 @@ try:
     from sonic_platform.platform_thrift_client import thrift_try
     from sonic_platform_base.fan_drawer_base import FanDrawerBase
     from sonic_platform_base.fan_base import FanBase
-    from sonic_py_common import device_info
     from fan import Fan
 except ImportError as e:
     raise ImportError (str(e) + "- required module not found")
 
-_CONST_MAX_FAN = 2
-_MAX_FANTRAY = 5
-
-_product_dict = {
-    "x86_64-accton_wedge100bf_32x-r0"   : "Montara",
-    "x86_64-accton_as9516_32d-r0"       : "Newport",
-    "Lx86_64-accton_as9516bf_32d-r0"    : "Newport",
-    "x86_64-accton_wedge100bf_65x-r0"   : "Mavericks"
-}
+_MAX_FAN = 10
 
 def _fan_info_get_all():
-    for fan_num in range(1, _CONST_MAX_FAN + 1):
+    for fan_num in range(1, _MAX_FAN + 1):
         def get_data(client, fan_num=fan_num):
             return client.pltfm_mgr.pltfm_mgr_fan_info_get(fan_num)
         fan_info = thrift_try(get_data)
@@ -27,17 +18,14 @@ def _fan_info_get_all():
 
 # FanDrawer -> FanDrawerBase -> DeviceBase
 class FanDrawer(FanDrawerBase):
-    def __init__(self, fantray_index, modelstr="Montara"):
+    def __init__(self, fantray_index):
         # For now we return only present fans
-        self.modelstr = modelstr
+        self._fan_list = [Fan(i.fan_num) for i in _fan_info_get_all()]
         self.fantrayindex = fantray_index + 1
-        self._fan_list = [Fan(i.fan_num, self.fantrayindex, modelstr) for i in _fan_info_get_all()]
-
-
 
     # DeviceBase interface methods:
     def get_name(self):
-        return f"fantray-{self.fantrayindex}"
+        return 'fantray'
 
     def get_presence(self):
         return True
@@ -60,7 +48,7 @@ class FanDrawer(FanDrawerBase):
         Returns:
             bool: True if it is replaceable, False if not
         """
-        return False
+        return True
 
     def get_model(self):
         """
@@ -108,15 +96,5 @@ class FanDrawer(FanDrawerBase):
         """
         return 36.0
 
-def get_platform_name():
-    return _product_dict.get(device_info.get_platform())
-
 def fan_drawer_list_get():
-    global  _MAX_FANTRAY
-    platform = get_platform_name()
-    if platform == "Newport":
-        _MAX_FANTRAY = 6
-    if platform == "Mavericks":
-        _MAX_FANTRAY = 10
-
-    return [FanDrawer(i, platform) for i in range(0, _MAX_FANTRAY)]
+    return [FanDrawer(0)]

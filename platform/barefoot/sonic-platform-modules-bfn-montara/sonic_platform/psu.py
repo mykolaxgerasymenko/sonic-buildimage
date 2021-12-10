@@ -3,6 +3,7 @@
 try:
     import os
     import sys
+    import time
 
     sys.path.append(os.path.dirname(__file__))
 
@@ -18,6 +19,8 @@ class Psu(PsuBase):
     def __init__(self, index):
         PsuBase.__init__(self)
         self.__index = index
+        self.__info = None
+        self.__ts = 0
         # STUB IMPLEMENTATION
         self.color = ""
 
@@ -33,7 +36,16 @@ class Psu(PsuBase):
         def psu_info_get(client):
             return client.pltfm_mgr.pltfm_mgr_pwr_supply_info_get(self.__index)
 
-        return thrift_try(psu_info_get)
+        # Update cache once per 2 seconds
+        if self.__ts + 2 < time.time():
+            self.__info = None
+            try:
+                self.__info = thrift_try(psu_info_get, attempts=1)
+            finally:
+                self.__ts = time.time()
+                return self.__info
+        return self.__info
+
 
     @staticmethod
     def get_num_psus():
@@ -54,6 +66,8 @@ class Psu(PsuBase):
         :return: Boolean, True if PSU is operating properly, False if PSU is faulty
         """
         info = self.__info_get()
+        if info is None:
+            return False
         return info.ffault == False and info.vout != 0
 
     def get_voltage(self):
@@ -64,7 +78,8 @@ class Psu(PsuBase):
             A float number, the output voltage in volts,
             e.g. 12.1
         """
-        return float(self.__info_get().vout)
+        info = self.__info_get()
+        return float(info.vout) if info else 0
 
     def get_current(self):
         """
@@ -73,7 +88,8 @@ class Psu(PsuBase):
         Returns:
             A float number, the electric current in amperes, e.g 15.4
         """
-        return self.__info_get().iout / 1000.
+        info = self.__info_get()
+        return info.iout / 1000 if info else 0
 
     def get_power(self):
         """
@@ -82,7 +98,8 @@ class Psu(PsuBase):
         Returns:
             A float number, the power in watts, e.g. 302.6
         """
-        return self.__info_get().pwr_out / 1000.
+        info = self.__info_get()
+        return info.pwr_out / 1000 if info else 0
 
     def get_presence(self):
         """
@@ -94,8 +111,11 @@ class Psu(PsuBase):
         def psu_present_get(client):
             return client.pltfm_mgr.pltfm_mgr_pwr_supply_present_get(self.__index)
 
-        status = thrift_try(psu_present_get)
-        return status
+        status = False
+        try:
+            status = thrift_try(psu_present_get)
+        finally:
+            return status
 
     def set_status_led(self, color):
         """
@@ -130,7 +150,8 @@ class Psu(PsuBase):
         Returns:
             string: Serial number of device
         """
-        return self.__info_get().serial
+        info = self.__info_get()
+        return info.serial if info else "N/A"
 
     def get_model(self):
         """
@@ -139,7 +160,8 @@ class Psu(PsuBase):
         Returns:
             string: Model/part number of device
         """
-        return self.__info_get().model
+        info = self.__info_get()
+        return info.model if info else "N/A"
 
     def is_replaceable(self):
         """
@@ -156,7 +178,8 @@ class Psu(PsuBase):
         Returns:
             string: Revision value of device
         """
-        return self.__info_get().rev
+        info = self.__info_get()
+        return info.rev if info else "N/A"
 
     def get_status(self):
         """

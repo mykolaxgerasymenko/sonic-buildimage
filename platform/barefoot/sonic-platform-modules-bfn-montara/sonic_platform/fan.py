@@ -16,35 +16,43 @@ def _fan_info_get(fan_num, cb, default=None):
 
 # Fan -> FanBase -> DeviceBase
 class Fan(FanBase):
-    def __init__(self, num):
-        self.__num = num
+    def __init__(self, fan_index, fantrayindex, platform="Montara"):
+        self.fan_index = fan_index
+        self.fantrayindex = fantrayindex
+        self.platform = platform
 
     # FanBase interface methods:
     # returns speed in percents
     def get_speed(self):
         def cb(info): return info.percent
-        return _fan_info_get(self.__num, cb, 0)
+        return _fan_info_get(self.fan_index, cb, 0)
 
     def set_speed(self, percent):
-        def set_fan_speed(client):
-            return client.pltfm_mgr.pltfm_mgr_fan_speed_set(self.__num, percent)
-        return thrift_try(set_fan_speed)
+
+        # Fan tray speed controlled by BMC
+        # Should return True to avoid thermalctld alarm
+        return False
 
     # DeviceBase interface methods:
     def get_name(self):
-        return f"counter-rotating-fan-{self.__num}"
+        print("self.fan_index ", self.fan_index)
+        if self.fan_index%2 == 0:
+            return "FAN-{}R".format(self.fantrayindex) 
+        return "FAN-{}F".format(self.fantrayindex)
 
     def get_presence(self):
-        return _fan_info_get(self.__num, lambda _: True, False)
+        return _fan_info_get(self.fan_index, lambda _: True, False)
 
     def get_position_in_parent(self):
-        return self.__num
+        return self.fan_index
 
     def is_replaceable(self):
-        return True
+        return False
 
     def get_status(self):
-        return True
+        if (self.get_presence() and self.get_presence() > 0):
+            return True
+        return False
 
     def get_model(self):
         """
@@ -81,7 +89,9 @@ class Fan(FanBase):
             An integer, the percentage of variance from target speed which is
                  considered tolerable
         """
-        return 0
+        if self.platform == "Newport":
+            return 6
+        return 3
 
     def get_serial(self):
         """

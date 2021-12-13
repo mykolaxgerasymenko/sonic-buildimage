@@ -212,3 +212,32 @@ class Chassis(ChassisBase):
             bool: True if it is replaceable.
         """
         return False
+
+    def initizalize_system_led(self):
+        self.system_led = ""
+        return True
+
+    def set_status_led(self, color):
+          """
+          Sets the state of the system LED
+
+          Args:
+              color: A string representing the color with which to set the
+                     system LED
+
+          Returns:
+              bool: True if system LED state is set successfully, False if not
+          """
+        self.system_led = color
+        return True
+
+      def get_status_led(self):
+          """
+          Gets the state of the system LED
+
+          Returns:
+              A string, one of the valid LED color strings which could be vendor
+              specified.
+          """
+
+          return self.system_led

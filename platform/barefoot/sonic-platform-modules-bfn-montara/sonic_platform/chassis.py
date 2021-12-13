@@ -239,5 +239,4 @@ class Chassis(ChassisBase):
               A string, one of the valid LED color strings which could be vendor
               specified.
           """
-
           return self.system_led

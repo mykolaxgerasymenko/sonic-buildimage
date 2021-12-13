@@ -3,40 +3,102 @@
         "name": "Wedge100BF-32X-O-AC-F-BF",
         "fans": [
             {
-                "name": "counter-rotating-fan-1"
+                "name": "counter-rotating-fan-1",
+                "status_led": {
+                    "controllable": false
+                },
+                "speed": {
+                    "controllable": false
+                }
             },
             {
-                "name": "counter-rotating-fan-2"
+                "name": "counter-rotating-fan-2",
+                "status_led": {
+                    "controllable": false
+                },
+                "speed": {
+                    "controllable": false
+                }
             },
             {
-                "name": "counter-rotating-fan-3"
+                "name": "counter-rotating-fan-3",
+                "status_led": {
+                    "controllable": false
+                },
+                "speed": {
+                    "controllable": false
+                }
             },
             {
-                "name": "counter-rotating-fan-4"
+                "name": "counter-rotating-fan-4",
+                "status_led": {
+                    "controllable": false
+                },
+                "speed": {
+                    "controllable": false
+                }
             },
             {
-                "name": "counter-rotating-fan-5"
+                "name": "counter-rotating-fan-5",
+                "status_led": {
+                    "controllable": false
+                },
+                "speed": {
+                    "controllable": false
+                }
             }
         ],
         "fan_drawers":[
             {
-                "name": "fantray",
-                "num_fans" : 5,
+                "name": "fantray-1",
+                "status_led": {
+                    "controllable": false
+                },
                 "fans": [
                     {
-                        "name": "counter-rotating-fan-1"
+                        "name": "counter-rotating-fan-1",
+                        "status_led": {
+                            "controllable": false
+                        },
+                        "speed": {
+                            "controllable": false
+                        }
                     },
                     {
-                        "name": "counter-rotating-fan-2"
+                        "name": "counter-rotating-fan-2",
+                        "status_led": {
+                            "controllable": false
+                        },
+                        "speed": {
+                            "controllable": false
+                        }
                     },
                     {
-                        "name": "counter-rotating-fan-3"
+                        "name": "counter-rotating-fan-3",
+                        "status_led": {
+                            "controllable": false
+                        },
+                        "speed": {
+                            "controllable": false
+                        }
                     },
                     {
-                        "name": "counter-rotating-fan-4"
+                        "name": "counter-rotating-fan-4",
+                        "status_led": {
+                            "controllable": false
+                        },
+                        "speed": {
+                            "controllable": false
+                        }
                     },
                     {
-                        "name": "counter-rotating-fan-5"
+                        "name": "counter-rotating-fan-5",
+                        "status_led": {
+                            "controllable": false
+                        },
+                        "speed": {
+                            "controllable": false
+                        }
                     }
                 ]
             }

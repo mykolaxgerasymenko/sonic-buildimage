@@ -1,6 +1,7 @@
 try:
     from sonic_platform.platform_thrift_client import thrift_try
     from sonic_platform_base.fan_base import FanBase
+    from sonic_py_common import device_info
 except ImportError as e:
     raise ImportError (str(e) + "- required module not found")
 
@@ -16,35 +17,35 @@ def _fan_info_get(fan_num, cb, default=None):
 
 # Fan -> FanBase -> DeviceBase
 class Fan(FanBase):
-    def __init__(self, num):
-        self.__num = num
+    def __init__(self, index, fantrayindex):
+        self.__index = index
+        self.__fantrayindex = fantrayindex
 
     # FanBase interface methods:
     # returns speed in percents
     def get_speed(self):
         def cb(info): return info.percent
-        return _fan_info_get(self.__num, cb, 0)
+        return _fan_info_get(self.__index, cb, 0)
 
     def set_speed(self, percent):
-        def set_fan_speed(client):
-            return client.pltfm_mgr.pltfm_mgr_fan_speed_set(self.__num, percent)
-        return thrift_try(set_fan_speed)
+        # Fan tray speed controlled by BMC
+        return False
 
     # DeviceBase interface methods:
     def get_name(self):
-        return f"counter-rotating-fan-{self.__num}"
+        return "counter-rotating-fan-{}".format((self.__fantrayindex - 1) * self.__index + self.__index)
 
     def get_presence(self):
-        return _fan_info_get(self.__num, lambda _: True, False)
+        return _fan_info_get(self.__index, lambda _: True, False)
 
     def get_position_in_parent(self):
-        return self.__num
+        return self.__index
 
     def is_replaceable(self):
-        return True
+        return False
 
     def get_status(self):
-        return True
+        return (self.get_presence() and self.get_presence() > 0)
 
     def get_model(self):
         """
@@ -57,7 +58,6 @@ class Fan(FanBase):
     def get_direction(self):
         """
         Retrieves the direction of fan
-
         Returns:
             A string, either FAN_DIRECTION_INTAKE or FAN_DIRECTION_EXHAUST
             depending on fan direction
@@ -76,17 +76,17 @@ class Fan(FanBase):
     def get_speed_tolerance(self):
         """
         Retrieves the speed tolerance of the fan
-
         Returns:
             An integer, the percentage of variance from target speed which is
                  considered tolerable
         """
-        return 0
+        if device_info.get_platform() in ["x86_64-accton_as9516_32d-r0", "x86_64-accton_as9516bf_32d-r0"]:
+            return 6
+        return 3
 
     def get_serial(self):
         """
         Retrieves the serial number of the device
-
         Returns:
             string: Serial number of device
         """
@@ -95,14 +95,11 @@ class Fan(FanBase):
     def set_status_led(self, color):
         """
         Sets the state of the fan module status LED
-
         Args:
             color: A string representing the color with which to set the
                    fan module status LED
-
         Returns:
             bool: True if status LED state is set successfully, False if not
         """
         # Fan tray status LED controlled by BMC
-        # Should return True to avoid thermalctld alarm
         return False

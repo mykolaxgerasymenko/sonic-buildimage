@@ -2,30 +2,21 @@ try:
     from sonic_platform.platform_thrift_client import thrift_try
     from sonic_platform_base.fan_drawer_base import FanDrawerBase
     from sonic_platform_base.fan_base import FanBase
+    from sonic_py_common import device_info
     from fan import Fan
 except ImportError as e:
     raise ImportError (str(e) + "- required module not found")
 
-_MAX_FAN = 10
-
-def _fan_info_get_all():
-    for fan_num in range(1, _MAX_FAN + 1):
-        def get_data(client, fan_num=fan_num):
-            return client.pltfm_mgr.pltfm_mgr_fan_info_get(fan_num)
-        fan_info = thrift_try(get_data)
-        if fan_info.fan_num == fan_num:
-            yield fan_info
-
 # FanDrawer -> FanDrawerBase -> DeviceBase
 class FanDrawer(FanDrawerBase):
-    def __init__(self, fantray_index):
+    def __init__(self, fantray_index, max_fan):
         # For now we return only present fans
-        self._fan_list = [Fan(i.fan_num) for i in _fan_info_get_all()]
-        self.fantrayindex = fantray_index + 1
+        self.fantrayindex = fantray_index
+        self._fan_list = [Fan(i, self.fantrayindex) for i in range(1, max_fan + 1)]
 
     # DeviceBase interface methods:
     def get_name(self):
-        return 'fantray'
+        return f"fantray-{self.fantrayindex}"
 
     def get_presence(self):
         return True
@@ -48,7 +39,7 @@ class FanDrawer(FanDrawerBase):
         Returns:
             bool: True if it is replaceable, False if not
         """
-        return True
+        return False
 
     def get_model(self):
         """
@@ -76,7 +67,6 @@ class FanDrawer(FanDrawerBase):
             bool: True if set success, False if fail.
         """
         # Fan tray status LED controlled by BMC
-        # Should return True to avoid thermalctld alarm
         return False
 
     def get_status_led(self):
@@ -97,4 +87,18 @@ class FanDrawer(FanDrawerBase):
         return 36.0
 
 def fan_drawer_list_get():
-    return [FanDrawer(0)]
+    max_fan = 5
+    max_fantray = 1
+
+    platform = device_info.get_platform()
+    if platform in ["x86_64-accton_as9516_32d-r0", "x86_64-accton_as9516bf_32d-r0"]:
+        max_fantray = 1
+        max_fan = 6
+    elif platform == "x86_64-accton_wedge100bf_65x-r0":
+        max_fantray = 2
+        max_fan = 5
+    else:
+        max_fan = 5
+        max_fantray = 1
+    
+    return [FanDrawer(i, max_fan) for i in range(1, max_fantray + 1)]

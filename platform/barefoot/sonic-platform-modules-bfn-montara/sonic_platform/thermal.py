@@ -1,7 +1,7 @@
 try:
     import subprocess
 
-    from sonic_platform.bfn_extensions.platform_sensors import platform_sensors_get
+    from bfn_extensions.platform_sensors import platform_sensors_get
     from sonic_platform_base.thermal_base import ThermalBase
 except ImportError as e:
     raise ImportError (str(e) + "- required module not found")

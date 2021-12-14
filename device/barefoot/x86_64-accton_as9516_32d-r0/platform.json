@@ -10,7 +10,7 @@
                 "speed": {
                     "controllable": false
                 }
-            }
+            },
             {
                 "name": "counter-rotating-fan-2",
                 "status_led": {
@@ -57,7 +57,7 @@
                 }
             }
         ],
-        "fan_drawers":[
+        "fan_drawers": [
             {
                 "name": "fantray-1",
                 "status_led": {
@@ -123,10 +123,12 @@
         ],
         "psus": [
             {
-                "name": "psu-1"
+                "name": "psu-1",
+                "temperature": false
             },
             {
-                "name": "psu-2"
+                "name": "psu-2",
+                "temperature": false
             }
         ],
         "thermals": [

@@ -1111,21 +1111,31 @@ class pltfm_mgr_qsfp_threshold_t(object):
 class pltfm_mgr_qsfp_thresholds_t(object):
     """
     Attributes:
-     - temp
-     - vcc
      - rx_pwr
-     - tx_pwr
+     - temp
      - tx_bias
+     - tx_pwr
+     - vcc
+     - rx_pwr_is_set
+     - temp_is_set
+     - tx_bias_is_set
+     - tx_pwr_is_set
+     - vcc_is_set
 
     """
 
 
-    def __init__(self, temp=None, vcc=None, rx_pwr=None, tx_pwr=None, tx_bias=None,):
-        self.temp = temp
-        self.vcc = vcc
+    def __init__(self, rx_pwr=None, temp=None, tx_bias=None, tx_pwr=None, vcc=None, rx_pwr_is_set=None, temp_is_set=None, tx_bias_is_set=None, tx_pwr_is_set=None, vcc_is_set=None,):
         self.rx_pwr = rx_pwr
-        self.tx_pwr = tx_pwr
+        self.temp = temp
         self.tx_bias = tx_bias
+        self.tx_pwr = tx_pwr
+        self.vcc = vcc
+        self.rx_pwr_is_set = rx_pwr_is_set
+        self.temp_is_set = temp_is_set
+        self.tx_bias_is_set = tx_bias_is_set
+        self.tx_pwr_is_set = tx_pwr_is_set
+        self.vcc_is_set = vcc_is_set
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -1138,20 +1148,20 @@ class pltfm_mgr_qsfp_thresholds_t(object):
                 break
             if fid == -1:
                 if ftype == TType.STRUCT:
-                    self.temp = pltfm_mgr_qsfp_threshold_t()
-                    self.temp.read(iprot)
+                    self.rx_pwr = pltfm_mgr_qsfp_threshold_t()
+                    self.rx_pwr.read(iprot)
                 else:
                     iprot.skip(ftype)
             elif fid == -2:
                 if ftype == TType.STRUCT:
-                    self.vcc = pltfm_mgr_qsfp_threshold_t()
-                    self.vcc.read(iprot)
+                    self.temp = pltfm_mgr_qsfp_threshold_t()
+                    self.temp.read(iprot)
                 else:
                     iprot.skip(ftype)
             elif fid == -3:
                 if ftype == TType.STRUCT:
-                    self.rx_pwr = pltfm_mgr_qsfp_threshold_t()
-                    self.rx_pwr.read(iprot)
+                    self.tx_bias = pltfm_mgr_qsfp_threshold_t()
+                    self.tx_bias.read(iprot)
                 else:
                     iprot.skip(ftype)
             elif fid == -4:
@@ -1162,8 +1172,33 @@ class pltfm_mgr_qsfp_thresholds_t(object):
                     iprot.skip(ftype)
             elif fid == -5:
                 if ftype == TType.STRUCT:
-                    self.tx_bias = pltfm_mgr_qsfp_threshold_t()
-                    self.tx_bias.read(iprot)
+                    self.vcc = pltfm_mgr_qsfp_threshold_t()
+                    self.vcc.read(iprot)
+                else:
+                    iprot.skip(ftype)
+            elif fid == -6:
+                if ftype == TType.BOOL:
+                    self.rx_pwr_is_set = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == -7:
+                if ftype == TType.BOOL:
+                    self.temp_is_set = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == -8:
+                if ftype == TType.BOOL:
+                    self.tx_bias_is_set = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == -9:
+                if ftype == TType.BOOL:
+                    self.tx_pwr_is_set = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == -10:
+                if ftype == TType.BOOL:
+                    self.vcc_is_set = iprot.readBool()
                 else:
                     iprot.skip(ftype)
             else:
@@ -1176,25 +1211,45 @@ class pltfm_mgr_qsfp_thresholds_t(object):
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
         oprot.writeStructBegin('pltfm_mgr_qsfp_thresholds_t')
-        if self.tx_bias is not None:
-            oprot.writeFieldBegin('tx_bias', TType.STRUCT, -5)
-            self.tx_bias.write(oprot)
+        if self.vcc_is_set is not None:
+            oprot.writeFieldBegin('vcc_is_set', TType.BOOL, -10)
+            oprot.writeBool(self.vcc_is_set)
+            oprot.writeFieldEnd()
+        if self.tx_pwr_is_set is not None:
+            oprot.writeFieldBegin('tx_pwr_is_set', TType.BOOL, -9)
+            oprot.writeBool(self.tx_pwr_is_set)
+            oprot.writeFieldEnd()
+        if self.tx_bias_is_set is not None:
+            oprot.writeFieldBegin('tx_bias_is_set', TType.BOOL, -8)
+            oprot.writeBool(self.tx_bias_is_set)
+            oprot.writeFieldEnd()
+        if self.temp_is_set is not None:
+            oprot.writeFieldBegin('temp_is_set', TType.BOOL, -7)
+            oprot.writeBool(self.temp_is_set)
+            oprot.writeFieldEnd()
+        if self.rx_pwr_is_set is not None:
+            oprot.writeFieldBegin('rx_pwr_is_set', TType.BOOL, -6)
+            oprot.writeBool(self.rx_pwr_is_set)
+            oprot.writeFieldEnd()
+        if self.vcc is not None:
+            oprot.writeFieldBegin('vcc', TType.STRUCT, -5)
+            self.vcc.write(oprot)
             oprot.writeFieldEnd()
         if self.tx_pwr is not None:
             oprot.writeFieldBegin('tx_pwr', TType.STRUCT, -4)
             self.tx_pwr.write(oprot)
             oprot.writeFieldEnd()
-        if self.rx_pwr is not None:
-            oprot.writeFieldBegin('rx_pwr', TType.STRUCT, -3)
-            self.rx_pwr.write(oprot)
-            oprot.writeFieldEnd()
-        if self.vcc is not None:
-            oprot.writeFieldBegin('vcc', TType.STRUCT, -2)
-            self.vcc.write(oprot)
+        if self.tx_bias is not None:
+            oprot.writeFieldBegin('tx_bias', TType.STRUCT, -3)
+            self.tx_bias.write(oprot)
             oprot.writeFieldEnd()
         if self.temp is not None:
-            oprot.writeFieldBegin('temp', TType.STRUCT, -1)
+            oprot.writeFieldBegin('temp', TType.STRUCT, -2)
             self.temp.write(oprot)
+            oprot.writeFieldEnd()
+        if self.rx_pwr is not None:
+            oprot.writeFieldBegin('rx_pwr', TType.STRUCT, -1)
+            self.rx_pwr.write(oprot)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()

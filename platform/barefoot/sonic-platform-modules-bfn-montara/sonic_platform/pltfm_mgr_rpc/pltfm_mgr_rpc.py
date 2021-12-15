@@ -110,12 +110,28 @@ class Iface(object):
         """
         pass
 
+    def pltfm_mgr_qsfp_reset_get(self, port_num):
+        """
+        Parameters:
+         - port_num
+
+        """
+        pass
+
     def pltfm_mgr_qsfp_tx_disable(self, port_num, channel_mask, disable):
         """
         Parameters:
          - port_num
          - channel_mask
          - disable
+
+        """
+        pass
+
+    def pltfm_mgr_qsfp_chan_count_get(self, port_num):
+        """
+        Parameters:
+         - port_num
 
         """
         pass
@@ -229,6 +245,24 @@ class Iface(object):
         """
         Parameters:
          - port_num
+
+        """
+        pass
+
+    def pltfm_mgr_qsfp_pwr_override_get(self, port_num):
+        """
+        Parameters:
+         - port_num
+
+        """
+        pass
+
+    def pltfm_mgr_qsfp_pwr_override_set(self, port_num, power_override, power_set):
+        """
+        Parameters:
+         - port_num
+         - power_override
+         - power_set
 
         """
         pass
@@ -684,6 +718,40 @@ class Client(Iface):
             raise result.ouch
         raise TApplicationException(TApplicationException.MISSING_RESULT, "pltfm_mgr_qsfp_reset failed: unknown result")
 
+    def pltfm_mgr_qsfp_reset_get(self, port_num):
+        """
+        Parameters:
+         - port_num
+
+        """
+        self.send_pltfm_mgr_qsfp_reset_get(port_num)
+        return self.recv_pltfm_mgr_qsfp_reset_get()
+
+    def send_pltfm_mgr_qsfp_reset_get(self, port_num):
+        self._oprot.writeMessageBegin('pltfm_mgr_qsfp_reset_get', TMessageType.CALL, self._seqid)
+        args = pltfm_mgr_qsfp_reset_get_args()
+        args.port_num = port_num
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_pltfm_mgr_qsfp_reset_get(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = pltfm_mgr_qsfp_reset_get_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        if result.ouch is not None:
+            raise result.ouch
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "pltfm_mgr_qsfp_reset_get failed: unknown result")
+
     def pltfm_mgr_qsfp_tx_disable(self, port_num, channel_mask, disable):
         """
         Parameters:
@@ -721,6 +789,40 @@ class Client(Iface):
         if result.ouch is not None:
             raise result.ouch
         raise TApplicationException(TApplicationException.MISSING_RESULT, "pltfm_mgr_qsfp_tx_disable failed: unknown result")
+
+    def pltfm_mgr_qsfp_chan_count_get(self, port_num):
+        """
+        Parameters:
+         - port_num
+
+        """
+        self.send_pltfm_mgr_qsfp_chan_count_get(port_num)
+        return self.recv_pltfm_mgr_qsfp_chan_count_get()
+
+    def send_pltfm_mgr_qsfp_chan_count_get(self, port_num):
+        self._oprot.writeMessageBegin('pltfm_mgr_qsfp_chan_count_get', TMessageType.CALL, self._seqid)
+        args = pltfm_mgr_qsfp_chan_count_get_args()
+        args.port_num = port_num
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_pltfm_mgr_qsfp_chan_count_get(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = pltfm_mgr_qsfp_chan_count_get_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        if result.ouch is not None:
+            raise result.ouch
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "pltfm_mgr_qsfp_chan_count_get failed: unknown result")
 
     def pltfm_mgr_qsfp_chan_rx_pwr_get(self, port_num):
         """
@@ -1200,6 +1302,78 @@ class Client(Iface):
             raise result.ouch
         raise TApplicationException(TApplicationException.MISSING_RESULT, "pltfm_mgr_qsfp_lpmode_get failed: unknown result")
 
+    def pltfm_mgr_qsfp_pwr_override_get(self, port_num):
+        """
+        Parameters:
+         - port_num
+
+        """
+        self.send_pltfm_mgr_qsfp_pwr_override_get(port_num)
+        return self.recv_pltfm_mgr_qsfp_pwr_override_get()
+
+    def send_pltfm_mgr_qsfp_pwr_override_get(self, port_num):
+        self._oprot.writeMessageBegin('pltfm_mgr_qsfp_pwr_override_get', TMessageType.CALL, self._seqid)
+        args = pltfm_mgr_qsfp_pwr_override_get_args()
+        args.port_num = port_num
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_pltfm_mgr_qsfp_pwr_override_get(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = pltfm_mgr_qsfp_pwr_override_get_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        if result.ouch is not None:
+            raise result.ouch
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "pltfm_mgr_qsfp_pwr_override_get failed: unknown result")
+
+    def pltfm_mgr_qsfp_pwr_override_set(self, port_num, power_override, power_set):
+        """
+        Parameters:
+         - port_num
+         - power_override
+         - power_set
+
+        """
+        self.send_pltfm_mgr_qsfp_pwr_override_set(port_num, power_override, power_set)
+        return self.recv_pltfm_mgr_qsfp_pwr_override_set()
+
+    def send_pltfm_mgr_qsfp_pwr_override_set(self, port_num, power_override, power_set):
+        self._oprot.writeMessageBegin('pltfm_mgr_qsfp_pwr_override_set', TMessageType.CALL, self._seqid)
+        args = pltfm_mgr_qsfp_pwr_override_set_args()
+        args.port_num = port_num
+        args.power_override = power_override
+        args.power_set = power_set
+        args.write(self._oprot)
+        self._oprot.writeMessageEnd()
+        self._oprot.trans.flush()
+
+    def recv_pltfm_mgr_qsfp_pwr_override_set(self):
+        iprot = self._iprot
+        (fname, mtype, rseqid) = iprot.readMessageBegin()
+        if mtype == TMessageType.EXCEPTION:
+            x = TApplicationException()
+            x.read(iprot)
+            iprot.readMessageEnd()
+            raise x
+        result = pltfm_mgr_qsfp_pwr_override_set_result()
+        result.read(iprot)
+        iprot.readMessageEnd()
+        if result.success is not None:
+            return result.success
+        if result.ouch is not None:
+            raise result.ouch
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "pltfm_mgr_qsfp_pwr_override_set failed: unknown result")
+
     def pltfm_mgr_qsfp_lpmode_set(self, port_num, lpmode):
         """
         Parameters:
@@ -1288,7 +1462,9 @@ class Processor(Iface, TProcessor):
         self._processMap["pltfm_mgr_qsfp_info_get"] = Processor.process_pltfm_mgr_qsfp_info_get
         self._processMap["pltfm_mgr_qsfp_get_max_port"] = Processor.process_pltfm_mgr_qsfp_get_max_port
         self._processMap["pltfm_mgr_qsfp_reset"] = Processor.process_pltfm_mgr_qsfp_reset
+        self._processMap["pltfm_mgr_qsfp_reset_get"] = Processor.process_pltfm_mgr_qsfp_reset_get
         self._processMap["pltfm_mgr_qsfp_tx_disable"] = Processor.process_pltfm_mgr_qsfp_tx_disable
+        self._processMap["pltfm_mgr_qsfp_chan_count_get"] = Processor.process_pltfm_mgr_qsfp_chan_count_get
         self._processMap["pltfm_mgr_qsfp_chan_rx_pwr_get"] = Processor.process_pltfm_mgr_qsfp_chan_rx_pwr_get
         self._processMap["pltfm_mgr_qsfp_chan_tx_bias_get"] = Processor.process_pltfm_mgr_qsfp_chan_tx_bias_get
         self._processMap["pltfm_mgr_qsfp_chan_tx_pwr_get"] = Processor.process_pltfm_mgr_qsfp_chan_tx_pwr_get
@@ -1303,6 +1479,8 @@ class Processor(Iface, TProcessor):
         self._processMap["pltfm_mgr_qsfp_thresholds_get"] = Processor.process_pltfm_mgr_qsfp_thresholds_get
         self._processMap["pltfm_mgr_qsfp_tx_is_disabled"] = Processor.process_pltfm_mgr_qsfp_tx_is_disabled
         self._processMap["pltfm_mgr_qsfp_lpmode_get"] = Processor.process_pltfm_mgr_qsfp_lpmode_get
+        self._processMap["pltfm_mgr_qsfp_pwr_override_get"] = Processor.process_pltfm_mgr_qsfp_pwr_override_get
+        self._processMap["pltfm_mgr_qsfp_pwr_override_set"] = Processor.process_pltfm_mgr_qsfp_pwr_override_set
         self._processMap["pltfm_mgr_qsfp_lpmode_set"] = Processor.process_pltfm_mgr_qsfp_lpmode_set
         self._processMap["pltfm_mgr_sensor_info_get"] = Processor.process_pltfm_mgr_sensor_info_get
         self._on_message_begin = None
@@ -1662,6 +1840,32 @@ class Processor(Iface, TProcessor):
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
+    def process_pltfm_mgr_qsfp_reset_get(self, seqid, iprot, oprot):
+        args = pltfm_mgr_qsfp_reset_get_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = pltfm_mgr_qsfp_reset_get_result()
+        try:
+            result.success = self._handler.pltfm_mgr_qsfp_reset_get(args.port_num)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except InvalidPltfmMgrOperation as ouch:
+            msg_type = TMessageType.REPLY
+            result.ouch = ouch
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("pltfm_mgr_qsfp_reset_get", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
     def process_pltfm_mgr_qsfp_tx_disable(self, seqid, iprot, oprot):
         args = pltfm_mgr_qsfp_tx_disable_args()
         args.read(iprot)
@@ -1684,6 +1888,32 @@ class Processor(Iface, TProcessor):
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
         oprot.writeMessageBegin("pltfm_mgr_qsfp_tx_disable", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_pltfm_mgr_qsfp_chan_count_get(self, seqid, iprot, oprot):
+        args = pltfm_mgr_qsfp_chan_count_get_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = pltfm_mgr_qsfp_chan_count_get_result()
+        try:
+            result.success = self._handler.pltfm_mgr_qsfp_chan_count_get(args.port_num)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except InvalidPltfmMgrOperation as ouch:
+            msg_type = TMessageType.REPLY
+            result.ouch = ouch
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("pltfm_mgr_qsfp_chan_count_get", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -2048,6 +2278,58 @@ class Processor(Iface, TProcessor):
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
         oprot.writeMessageBegin("pltfm_mgr_qsfp_lpmode_get", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_pltfm_mgr_qsfp_pwr_override_get(self, seqid, iprot, oprot):
+        args = pltfm_mgr_qsfp_pwr_override_get_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = pltfm_mgr_qsfp_pwr_override_get_result()
+        try:
+            result.success = self._handler.pltfm_mgr_qsfp_pwr_override_get(args.port_num)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except InvalidPltfmMgrOperation as ouch:
+            msg_type = TMessageType.REPLY
+            result.ouch = ouch
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("pltfm_mgr_qsfp_pwr_override_get", msg_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def process_pltfm_mgr_qsfp_pwr_override_set(self, seqid, iprot, oprot):
+        args = pltfm_mgr_qsfp_pwr_override_set_args()
+        args.read(iprot)
+        iprot.readMessageEnd()
+        result = pltfm_mgr_qsfp_pwr_override_set_result()
+        try:
+            result.success = self._handler.pltfm_mgr_qsfp_pwr_override_set(args.port_num, args.power_override, args.power_set)
+            msg_type = TMessageType.REPLY
+        except TTransport.TTransportException:
+            raise
+        except InvalidPltfmMgrOperation as ouch:
+            msg_type = TMessageType.REPLY
+            result.ouch = ouch
+        except TApplicationException as ex:
+            logging.exception('TApplication exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = ex
+        except Exception:
+            logging.exception('Unexpected exception in handler')
+            msg_type = TMessageType.EXCEPTION
+            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
+        oprot.writeMessageBegin("pltfm_mgr_qsfp_pwr_override_set", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -3834,6 +4116,142 @@ pltfm_mgr_qsfp_reset_result.thrift_spec = (
 )
 
 
+class pltfm_mgr_qsfp_reset_get_args(object):
+    """
+    Attributes:
+     - port_num
+
+    """
+
+
+    def __init__(self, port_num=None,):
+        self.port_num = port_num
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.port_num = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_reset_get_args')
+        if self.port_num is not None:
+            oprot.writeFieldBegin('port_num', TType.I32, 1)
+            oprot.writeI32(self.port_num)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_reset_get_args)
+pltfm_mgr_qsfp_reset_get_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'port_num', None, None, ),  # 1
+)
+
+
+class pltfm_mgr_qsfp_reset_get_result(object):
+    """
+    Attributes:
+     - success
+     - ouch
+
+    """
+
+
+    def __init__(self, success=None, ouch=None,):
+        self.success = success
+        self.ouch = ouch
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 1:
+                if ftype == TType.STRUCT:
+                    self.ouch = InvalidPltfmMgrOperation()
+                    self.ouch.read(iprot)
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_reset_get_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        if self.ouch is not None:
+            oprot.writeFieldBegin('ouch', TType.STRUCT, 1)
+            self.ouch.write(oprot)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_reset_get_result)
+pltfm_mgr_qsfp_reset_get_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+    (1, TType.STRUCT, 'ouch', [InvalidPltfmMgrOperation, None], None, ),  # 1
+)
+
+
 class pltfm_mgr_qsfp_tx_disable_args(object):
     """
     Attributes:
@@ -3989,6 +4407,142 @@ class pltfm_mgr_qsfp_tx_disable_result(object):
         return not (self == other)
 all_structs.append(pltfm_mgr_qsfp_tx_disable_result)
 pltfm_mgr_qsfp_tx_disable_result.thrift_spec = (
+    (0, TType.I32, 'success', None, None, ),  # 0
+    (1, TType.STRUCT, 'ouch', [InvalidPltfmMgrOperation, None], None, ),  # 1
+)
+
+
+class pltfm_mgr_qsfp_chan_count_get_args(object):
+    """
+    Attributes:
+     - port_num
+
+    """
+
+
+    def __init__(self, port_num=None,):
+        self.port_num = port_num
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.port_num = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_chan_count_get_args')
+        if self.port_num is not None:
+            oprot.writeFieldBegin('port_num', TType.I32, 1)
+            oprot.writeI32(self.port_num)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_chan_count_get_args)
+pltfm_mgr_qsfp_chan_count_get_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'port_num', None, None, ),  # 1
+)
+
+
+class pltfm_mgr_qsfp_chan_count_get_result(object):
+    """
+    Attributes:
+     - success
+     - ouch
+
+    """
+
+
+    def __init__(self, success=None, ouch=None,):
+        self.success = success
+        self.ouch = ouch
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.I32:
+                    self.success = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 1:
+                if ftype == TType.STRUCT:
+                    self.ouch = InvalidPltfmMgrOperation()
+                    self.ouch.read(iprot)
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_chan_count_get_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.I32, 0)
+            oprot.writeI32(self.success)
+            oprot.writeFieldEnd()
+        if self.ouch is not None:
+            oprot.writeFieldBegin('ouch', TType.STRUCT, 1)
+            self.ouch.write(oprot)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_chan_count_get_result)
+pltfm_mgr_qsfp_chan_count_get_result.thrift_spec = (
     (0, TType.I32, 'success', None, None, ),  # 0
     (1, TType.STRUCT, 'ouch', [InvalidPltfmMgrOperation, None], None, ),  # 1
 )
@@ -5981,6 +6535,297 @@ class pltfm_mgr_qsfp_lpmode_get_result(object):
         return not (self == other)
 all_structs.append(pltfm_mgr_qsfp_lpmode_get_result)
 pltfm_mgr_qsfp_lpmode_get_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+    (1, TType.STRUCT, 'ouch', [InvalidPltfmMgrOperation, None], None, ),  # 1
+)
+
+
+class pltfm_mgr_qsfp_pwr_override_get_args(object):
+    """
+    Attributes:
+     - port_num
+
+    """
+
+
+    def __init__(self, port_num=None,):
+        self.port_num = port_num
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.port_num = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_pwr_override_get_args')
+        if self.port_num is not None:
+            oprot.writeFieldBegin('port_num', TType.I32, 1)
+            oprot.writeI32(self.port_num)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_pwr_override_get_args)
+pltfm_mgr_qsfp_pwr_override_get_args.thrift_spec = (
+    None,  # 0
+    (1, TType.I32, 'port_num', None, None, ),  # 1
+)
+
+
+class pltfm_mgr_qsfp_pwr_override_get_result(object):
+    """
+    Attributes:
+     - success
+     - ouch
+
+    """
+
+
+    def __init__(self, success=None, ouch=None,):
+        self.success = success
+        self.ouch = ouch
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 1:
+                if ftype == TType.STRUCT:
+                    self.ouch = InvalidPltfmMgrOperation()
+                    self.ouch.read(iprot)
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_pwr_override_get_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        if self.ouch is not None:
+            oprot.writeFieldBegin('ouch', TType.STRUCT, 1)
+            self.ouch.write(oprot)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_pwr_override_get_result)
+pltfm_mgr_qsfp_pwr_override_get_result.thrift_spec = (
+    (0, TType.BOOL, 'success', None, None, ),  # 0
+    (1, TType.STRUCT, 'ouch', [InvalidPltfmMgrOperation, None], None, ),  # 1
+)
+
+
+class pltfm_mgr_qsfp_pwr_override_set_args(object):
+    """
+    Attributes:
+     - port_num
+     - power_override
+     - power_set
+
+    """
+
+
+    def __init__(self, port_num=None, power_override=None, power_set=None,):
+        self.port_num = port_num
+        self.power_override = power_override
+        self.power_set = power_set
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.I32:
+                    self.port_num = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            elif fid == -1:
+                if ftype == TType.BOOL:
+                    self.power_override = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == -2:
+                if ftype == TType.BOOL:
+                    self.power_set = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_pwr_override_set_args')
+        if self.power_set is not None:
+            oprot.writeFieldBegin('power_set', TType.BOOL, -2)
+            oprot.writeBool(self.power_set)
+            oprot.writeFieldEnd()
+        if self.power_override is not None:
+            oprot.writeFieldBegin('power_override', TType.BOOL, -1)
+            oprot.writeBool(self.power_override)
+            oprot.writeFieldEnd()
+        if self.port_num is not None:
+            oprot.writeFieldBegin('port_num', TType.I32, 1)
+            oprot.writeI32(self.port_num)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_pwr_override_set_args)
+pltfm_mgr_qsfp_pwr_override_set_args.thrift_spec = ()
+
+
+class pltfm_mgr_qsfp_pwr_override_set_result(object):
+    """
+    Attributes:
+     - success
+     - ouch
+
+    """
+
+
+    def __init__(self, success=None, ouch=None,):
+        self.success = success
+        self.ouch = ouch
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 0:
+                if ftype == TType.BOOL:
+                    self.success = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 1:
+                if ftype == TType.STRUCT:
+                    self.ouch = InvalidPltfmMgrOperation()
+                    self.ouch.read(iprot)
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('pltfm_mgr_qsfp_pwr_override_set_result')
+        if self.success is not None:
+            oprot.writeFieldBegin('success', TType.BOOL, 0)
+            oprot.writeBool(self.success)
+            oprot.writeFieldEnd()
+        if self.ouch is not None:
+            oprot.writeFieldBegin('ouch', TType.STRUCT, 1)
+            self.ouch.write(oprot)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+all_structs.append(pltfm_mgr_qsfp_pwr_override_set_result)
+pltfm_mgr_qsfp_pwr_override_set_result.thrift_spec = (
     (0, TType.BOOL, 'success', None, None, ),  # 0
     (1, TType.STRUCT, 'ouch', [InvalidPltfmMgrOperation, None], None, ),  # 1
 )

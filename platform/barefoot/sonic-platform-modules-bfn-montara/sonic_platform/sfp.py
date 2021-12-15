@@ -279,6 +279,14 @@ class Sfp(SfpBase):
     def get_transceiver_change_event(timeout=0):
         return Sfp.sfputil.get_transceiver_change_event()
 
+    def __chan_count_get(self):
+        def get_qsfp_chan_count(pltfm_mgr):
+            return pltfm_mgr.pltfm_mgr_qsfp_chan_count_get(self.index)
+        err, count = pltfm_mgr_try(get_qsfp_chan_count)
+        if err:
+            return None
+        return int(count)
+
     def __init__(self, port_num):
         self.index = port_num
         self.port_num = port_num
@@ -307,40 +315,36 @@ class Sfp(SfpBase):
     def get_transceiver_bulk_status(self):
         status = dict()
 
+        chan_count = self.__chan_count_get()
+        if chan_count is None:
+            return None
+
         rx_los = self.get_rx_los()
-        if rx_los is not None:
-            status['rx_los'] = any(rx_los)
+        status['rx_los'] = any(rx_los) if rx_los is not None else 'N/A'
 
         tx_fault = self.get_tx_fault()
-        if tx_fault is not None:
-            status['tx_fault'] = any(tx_fault)
-
-        lp_mode = self.get_lpmode()
-        if lp_mode is not None:
-            status['lp_mode'] = lp_mode
-
-        temperature = self.get_temperature()
-        if temperature is not None:
-            status['temperature'] = temperature
+        status['tx_fault'] = any(tx_fault) if tx_fault is not None else 'N/A'
 
         voltage = self.get_voltage()
-        if voltage is not None:
-            status['voltage'] = int(voltage)
+        status['voltage'] = int(voltage) if voltage is not None else 'N/A'
+
+        lp_mode = self.get_lpmode()
+        status['lp_mode'] = lp_mode if lp_mode is not None else 'N/A'
+
+        temperature = self.get_temperature()
+        status['temperature'] = int(temperature) if temperature is not None else 'N/A'
 
         tx_bias = self.get_tx_bias()
-        if tx_bias is not None:
-            for n, p in enumerate(tx_bias, 1):
-                status[f'tx{n}bias'] = int(p)
+        for n in range(chan_count):
+            status[f'tx{n + 1}bias'] = int(tx_bias[n]) if tx_bias is not None else 'N/A'
 
         tx_power = self.get_tx_power()
-        if tx_power is not None:
-            for n, p in enumerate(tx_power, 1):
-                status[f'tx{n}power'] = int(p)
+        for n in range(chan_count):
+            status[f'tx{n + 1}power'] = int(tx_power[n]) if tx_power is not None else 'N/A'
 
         rx_power = self.get_rx_power()
-        if rx_power is not None:
-            for n, p in enumerate(rx_power, 1):
-                status[f'rx{n}power'] = int(p)
+        for n in range(chan_count):
+            status[f'rx{n + 1}power'] = int(rx_power[n]) if rx_power is not None else 'N/A'
 
         return status
 
@@ -521,36 +525,56 @@ class Sfp(SfpBase):
         voltage_mV = voltage_V * 1000
         return voltage_mV
 
+    def get_reset_status(self):
+        def get_qsfp_reset(pltfm_mgr):
+            return pltfm_mgr.pltfm_mgr_qsfp_reset_get(self.index)
+        err, status = pltfm_mgr_try(get_qsfp_reset, False)
+        return status
+
+    def get_power_override(self):
+        def get_qsfp_power_override(pltfm_mgr):
+            return pltfm_mgr.pltfm_mgr_qsfp_pwr_override_get(self.index)
+        err, pwr_override = pltfm_mgr_try(get_qsfp_power_override)
+        return pwr_override
+
+    def set_power_override(self, power_override, power_set):
+        def set_qsfp_power_override(pltfm_mgr):
+            return pltfm_mgr.pltfm_mgr_qsfp_pwr_override_set(
+                self.index, power_override, power_set
+            )
+        err, status = pltfm_mgr_try(set_qsfp_power_override)
+        return status
+
     def get_transceiver_threshold_info(self):
         def qsfp_thres_info(pltfm_mgr):
             return pltfm_mgr.pltfm_mgr_qsfp_thresholds_get(self.index)
 
-        err, pltfm_info = pltfm_mgr_try(qsfp_thres_info)
+        err, ths = pltfm_mgr_try(qsfp_thres_info)
         if err:
             return None
 
         info = dict()
 
-        info['rxpowerhighalarm'] = pltfm_info.rx_pwr.highalarm
-        info['rxpowerhighwarning'] = pltfm_info.rx_pwr.lowalarm
-        info['rxpowerlowalarm'] = pltfm_info.rx_pwr.highwarning
-        info['rxpowerlowwarning'] = pltfm_info.rx_pwr.lowwarning
-        info['temphighalarm'] = pltfm_info.temp.highalarm
-        info['temphighwarning'] = pltfm_info.temp.lowalarm
-        info['templowalarm'] = pltfm_info.temp.highwarning
-        info['templowwarning'] = pltfm_info.temp.lowwarning
-        info['txbiashighalarm'] = pltfm_info.tx_bias.highalarm
-        info['txbiashighwarning'] = pltfm_info.tx_bias.lowalarm
-        info['txbiaslowalarm'] = pltfm_info.tx_bias.highwarning
-        info['txbiaslowwarning'] = pltfm_info.tx_bias.lowwarning
-        info['txpowerhighalarm'] = pltfm_info.tx_pwr.highalarm
-        info['txpowerhighwarning'] = pltfm_info.tx_pwr.lowalarm
-        info['txpowerlowalarm'] = pltfm_info.tx_pwr.highwarning
-        info['txpowerlowwarning'] = pltfm_info.tx_pwr.lowwarning
-        info['vcchighalarm'] = pltfm_info.vcc.highalarm
-        info['vcchighwarning'] = pltfm_info.vcc.lowalarm
-        info['vcclowalarm'] = pltfm_info.vcc.highwarning
-        info['vcclowwarning'] = pltfm_info.vcc.lowwarning
+        info['rxpowerhighalarm'] = ths.rx_pwr.highalarm if ths.rx_pwr_is_set else 'N/A'
+        info['rxpowerhighwarning'] = ths.rx_pwr.lowalarm if ths.rx_pwr_is_set else 'N/A'
+        info['rxpowerlowalarm'] = ths.rx_pwr.highwarning if ths.rx_pwr_is_set else 'N/A'
+        info['rxpowerlowwarning'] = ths.rx_pwr.lowwarning if ths.rx_pwr_is_set else 'N/A'
+        info['temphighalarm'] = ths.temp.highalarm if ths.temp_is_set else 'N/A'
+        info['temphighwarning'] = ths.temp.lowalarm if ths.temp_is_set else 'N/A'
+        info['templowalarm'] = ths.temp.highwarning if ths.temp_is_set else 'N/A'
+        info['templowwarning'] = ths.temp.lowwarning if ths.temp_is_set else 'N/A'
+        info['txbiashighalarm'] = ths.tx_bias.highalarm if ths.tx_bias_is_set else 'N/A'
+        info['txbiashighwarning'] = ths.tx_bias.lowalarm if ths.tx_bias_is_set else 'N/A'
+        info['txbiaslowalarm'] = ths.tx_bias.highwarning if ths.tx_bias_is_set else 'N/A'
+        info['txbiaslowwarning'] = ths.tx_bias.lowwarning if ths.tx_bias_is_set else 'N/A'
+        info['txpowerhighalarm'] = ths.tx_pwr.highalarm if ths.tx_pwr_is_set else 'N/A'
+        info['txpowerhighwarning'] = ths.tx_pwr.lowalarm if ths.tx_pwr_is_set else 'N/A'
+        info['txpowerlowalarm'] = ths.tx_pwr.highwarning if ths.tx_pwr_is_set else 'N/A'
+        info['txpowerlowwarning'] = ths.tx_pwr.lowwarning if ths.tx_pwr_is_set else 'N/A'
+        info['vcchighalarm'] = ths.vcc.highalarm if ths.vcc_is_set else 'N/A'
+        info['vcchighwarning'] = ths.vcc.lowalarm if ths.vcc_is_set else 'N/A'
+        info['vcclowalarm'] = ths.vcc.highwarning if ths.vcc_is_set else 'N/A'
+        info['vcclowwarning'] = ths.vcc.lowwarning if ths.vcc_is_set else 'N/A'
 
         return info
 

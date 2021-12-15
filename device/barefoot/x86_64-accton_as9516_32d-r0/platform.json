@@ -286,7 +286,7 @@
             "lanes": "0,1,2,3,4,5,6,7",
             "breakout_modes": {
                 "1x400G[200G]": ["Ethernet0"],
-                "2x200G[100G,40G]": ["Ethernet0, Ethernet4"],
+                "2x200G[100G,40G]": ["Ethernet0", "Ethernet4"],
                 "4x100G[50G]": ["Ethernet0", "Ethernet2", "Ethernet4", "Ethernet6"],
                 "8x50G[25G,10G]": ["Ethernet0", "Ethernet1", "Ethernet2", "Ethernet3", "Ethernet4", "Ethernet5", "Ethernet6", "Ethernet7"],
                 "1x200G[100G,40G](4)+4x50G[25G,10G](4)": ["Ethernet0", "Ethernet4", "Ethernet5", "Ethernet6", "Ethernet7"],
